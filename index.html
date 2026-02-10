@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Love💗</title>
 
-<!-- FONT CHANGE ONLY -->
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
@@ -12,29 +11,26 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Montserrat', sans-serif !important;
+    font-family:'Montserrat', sans-serif;
 }
 
 body{
     background: linear-gradient(120deg,#ff9a9e,#fad0c4);
     min-height:100vh;
     overflow:hidden;
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><text y="24" font-size="24">❤</text></svg>') 16 16, auto;
 }
 
-/* FLOATING HEARTS */
+/* HEARTS */
 .hearts{
     position:fixed;
     inset:0;
-    overflow:hidden;
     z-index:1;
     pointer-events:none;
 }
 
 .heart{
     position:absolute;
-    color:rgba(255,255,255,0.5);
-    font-size:20px;
+    color:rgba(255,255,255,0.6);
     animation:float 10s linear infinite;
 }
 
@@ -43,18 +39,17 @@ body{
     100%{transform:translateY(-10vh) scale(1.5);}
 }
 
-/* PASSWORD SCREEN */
+/* LOCK */
 #lockScreen{
     position:fixed;
     inset:0;
     display:flex;
-    align-items:center;
-    justify-content:center;
     flex-direction:column;
-    background: linear-gradient(120deg,#ff758c,#ff7eb3);
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(120deg,#ff758c,#ff7eb3);
     z-index:10;
     color:white;
-    backdrop-filter: blur(6px);
 }
 
 #lockScreen h1{
@@ -63,11 +58,17 @@ body{
     margin-bottom:20px;
 }
 
+#lockScreen img{
+    width:240px;
+    border-radius:20px;
+    margin-bottom:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.35);
+}
+
 #lockScreen input{
     padding:12px 20px;
     border-radius:25px;
     border:none;
-    outline:none;
     font-size:18px;
     text-align:center;
 }
@@ -83,38 +84,17 @@ body{
     cursor:pointer;
 }
 
-/* IMAGE STYLE */
-#lockScreen img{
-    width:240px;
-    border-radius:20px;
-    margin-bottom:25px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.35);
-    animation:fadeIn 1.5s forwards;
-}
-
-@keyframes fadeIn{
-    from{opacity:0;}
-    to{opacity:1;}
-}
-
-/* QUESTION SCREEN */
+/* QUESTION */
 #questionScreen{
     position:fixed;
     inset:0;
     display:none;
-    align-items:center;
-    justify-content:center;
     flex-direction:column;
+    justify-content:center;
+    align-items:center;
     text-align:center;
     color:white;
     z-index:5;
-}
-
-#questionScreen img{
-    width:220px;
-    border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
-    margin-bottom:20px;
 }
 
 #questionScreen h2{
@@ -126,7 +106,6 @@ body{
 .buttons{
     display:flex;
     gap:20px;
-    position:relative;
 }
 
 .btn{
@@ -135,45 +114,36 @@ body{
     border:none;
     font-size:18px;
     cursor:pointer;
-    transition:0.4s;
+    transition:0.3s;
 }
 
 #yesBtn{
     background:#ff4f7a;
     color:white;
     box-shadow:0 0 20px rgba(255,79,122,0.7);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #noBtn{
     background:white;
     color:#ff4f7a;
-    position:relative;
 }
 
-/* MESSAGE SCREEN */
+/* MESSAGE */
 #messageScreen{
     position:fixed;
     inset:0;
-    background: rgba(0,0,0,0.85); /* updated to be darker so text is readable */
-    color:white;
+    background:rgba(0,0,0,0.88);
     display:none;
     padding:40px;
     overflow-y:auto;
     z-index:20;
 }
 
-.fade{
-    animation:fadeIn 3s forwards;
-}
-
 #typedText{
+    color:white;
     font-size:22px;
     line-height:1.8;
     white-space:pre-line;
-    color: white; /* readable white text */
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-    transition: all 0.3s;
 }
 
 /* CONFETTI */
@@ -186,23 +156,8 @@ body{
 }
 
 @keyframes fall{
-    0%{transform:translateY(-10px) rotate(0deg);}
-    100%{transform:translateY(110vh) rotate(360deg);}
-}
-
-/* FLOATING PETALS */
-.petal{
-    position:fixed;
-    top:-50px;
-    font-size:16px;
-    color: #ffb6c1;
-    z-index:2;
-    animation:petalFall linear infinite;
-}
-
-@keyframes petalFall{
-    0%{transform:translateY(-50px) rotate(0deg);}
-    100%{transform:translateY(110vh) rotate(360deg);}
+    from{transform:translateY(-10px) rotate(0deg);}
+    to{transform:translateY(110vh) rotate(360deg);}
 }
 </style>
 </head>
@@ -230,117 +185,73 @@ body{
     <div id="typedText"></div>
 </div>
 
-<audio id="bgMusic" src="music.mp3" loop preload="auto"></audio>
+<audio id="bgMusic" src="music.mp3" loop></audio>
 
 <script>
+/* HEARTS */
 const heartsContainer = document.getElementById("hearts");
-
-// floating hearts
 setInterval(()=>{
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "❤";
-    heart.style.left = Math.random()*100+"vw";
-    heart.style.fontSize = (Math.random()*20+10)+"px";
-    heart.style.animationDuration = (Math.random()*5+5)+"s";
-    heartsContainer.appendChild(heart);
-    setTimeout(()=>heart.remove(),12000);
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤";
+    h.style.left=Math.random()*100+"vw";
+    h.style.fontSize=(Math.random()*20+10)+"px";
+    h.style.animationDuration=(Math.random()*5+5)+"s";
+    heartsContainer.appendChild(h);
+    setTimeout(()=>h.remove(),12000);
 },400);
 
+/* PASSWORD */
 function checkPassword(){
-    const pass = document.getElementById("passwordInput").value;
-    if(pass === "132806"){
-        document.getElementById("lockScreen").style.display="none";
-        document.getElementById("questionScreen").style.display="flex";
-
-        const music = document.getElementById("bgMusic");
-        music.volume = 0;
-        music.play();
-        let vol = 0;
-        const fade = setInterval(()=>{
-            if(vol < 1){
-                vol += 0.02;
-                music.volume = vol;
-            }else{
-                clearInterval(fade);
-            }
+    if(passwordInput.value==="132806"){
+        lockScreen.style.display="none";
+        questionScreen.style.display="flex";
+        bgMusic.volume=0;
+        bgMusic.play();
+        let v=0;
+        const fade=setInterval(()=>{
+            v+=0.02;
+            bgMusic.volume=v;
+            if(v>=1) clearInterval(fade);
         },100);
-
-        // start floating petals
-        startPetals();
-    }else{
-        alert("ano? di mo alam kelan naging tayo? tantadohh");
-    }
+    }else alert("ano? di mo alam kelan naging tayo? tantadohh");
 }
 
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
-let yesScale = 1;
-
-function moveNoButton(){
-    const x = Math.random()*400 - 200;
-    const y = Math.random()*400 - 200;
-    noBtn.style.transform = `translate(${x}px, ${y}px)`;
-
-    yesScale += 0.1; // grow Yes button
-    yesBtn.style.transform = `scale(${yesScale})`;
+/* NO + YES GROW */
+let scale=1;
+function moveNo(){
+    noBtn.style.transform=`translate(${Math.random()*400-200}px,${Math.random()*400-200}px)`;
+    scale+=0.12;
+    yesBtn.style.transform=`scale(${scale})`;
 }
-noBtn.addEventListener("mouseover", moveNoButton);
-noBtn.addEventListener("click", moveNoButton);
-noBtn.addEventListener("touchstart", moveNoButton);
+noBtn.addEventListener("mouseover",moveNo);
+noBtn.addEventListener("click",moveNo);
+noBtn.addEventListener("touchstart",moveNo);
 
-document.getElementById("yesBtn").addEventListener("click",()=>{
+/* YES */
+yesBtn.onclick=()=>{
     explodeConfetti();
-    document.getElementById("questionScreen").style.display="none";
-
-    const msg = document.getElementById("messageScreen");
-    msg.style.display="block";
-    msg.classList.add("fade");
-
+    questionScreen.style.display="none";
+    messageScreen.style.display="block";
+    typedText.innerHTML="";
+    i=0;
     typeMessage();
-});
+};
 
+/* CONFETTI */
 function explodeConfetti(){
     for(let i=0;i<200;i++){
-        const conf = document.createElement("div");
-        conf.classList.add("confetti");
-        conf.style.left = Math.random()*100+"vw";
-        conf.style.background = `hsl(${Math.random()*360},100%,60%)`;
-        conf.style.animationDuration = (Math.random()*3+2)+"s";
-        document.body.appendChild(conf);
-        setTimeout(()=>conf.remove(),5000);
+        const c=document.createElement("div");
+        c.className="confetti";
+        c.style.left=Math.random()*100+"vw";
+        c.style.background=`hsl(${Math.random()*360},100%,60%)`;
+        c.style.animationDuration=(Math.random()*3+2)+"s";
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(),5000);
     }
 }
 
-// click hearts magic
-document.addEventListener("click", function(e){
-    const clickHeart = document.createElement("div");
-    clickHeart.classList.add("heart");
-    clickHeart.innerHTML = "❤";
-    clickHeart.style.left = e.clientX + "px";
-    clickHeart.style.top = e.clientY + "px";
-    clickHeart.style.fontSize = (Math.random()*20+10)+"px";
-    clickHeart.style.color = `hsl(${Math.random()*360},100%,70%)`;
-    heartsContainer.appendChild(clickHeart);
-    setTimeout(()=>clickHeart.remove(),1500);
-});
-
-// floating petals
-function startPetals(){
-    setInterval(()=>{
-        const petal = document.createElement("div");
-        petal.classList.add("petal");
-        petal.style.left = Math.random()*100+"vw";
-        petal.style.fontSize = (Math.random()*14+10)+"px";
-        petal.style.animationDuration = (Math.random()*5+5)+"s";
-        petal.style.opacity = Math.random()*0.7+0.3;
-        petal.innerHTML = "🌹";
-        document.body.appendChild(petal);
-        setTimeout(()=>petal.remove(),10000);
-    },500);
-}
-
-// type message
+/* MESSAGE (UNTOUCHED) */
 const message = `
 Happy Valentine's Day, Love!!! 💗
 
@@ -359,39 +270,27 @@ Johannes
 
 let i=0;
 function typeMessage(){
-    const textBox = document.getElementById("typedText");
-    if(i < message.length){
-        textBox.innerHTML += message.charAt(i);
+    if(i<message.length){
+        typedText.innerHTML+=message.charAt(i);
         i++;
-        window.scrollTo({ top: document.body.scrollHeight, behavior:"smooth" });
-
-        // end-of-message surprise
-        if(i === message.length){
-            explodeConfetti();
-            const typedText = document.getElementById("typedText");
-            typedText.style.transition = "transform 0.5s";
-            typedText.style.transform = "scale(1.05)";
-            setTimeout(()=>typedText.style.transform="scale(1)",500);
-        }
+        setTimeout(typeMessage,35);
     }
 }
 
-const imgs = ["image.jpg", "image1.jpg"];
-let imgIndex = 0;
+/* IMAGE SWAP */
+const imgs=["image.jpg","image1.jpg"];
+let idx=0;
 setInterval(()=>{
-    const img = document.getElementById("loveImage");
-    if(!img) return;
-    imgIndex = (imgIndex + 1) % imgs.length;
-    img.style.opacity = 0;
-    setTimeout(()=>{
-        img.src = imgs[imgIndex];
-        img.style.opacity = 1;
-    },500);
+    if(loveImage){
+        idx=(idx+1)%imgs.length;
+        loveImage.src=imgs[idx];
+    }
 },4000);
 </script>
 
 </body>
 </html>
+
 
 
 
