@@ -20,26 +20,7 @@ body{
     overflow:hidden;
 }
 
-/* HEARTS */
-.hearts{
-    position:fixed;
-    inset:0;
-    z-index:1;
-    pointer-events:none;
-}
-
-.heart{
-    position:absolute;
-    color:rgba(255,255,255,0.6);
-    animation:float 10s linear infinite;
-}
-
-@keyframes float{
-    0%{transform:translateY(100vh);}
-    100%{transform:translateY(-10vh);}
-}
-
-/* COUNTDOWN */
+/* COUNTDOWN SCREEN (ADDED ONLY THIS SECTION) */
 #countdownScreen{
     position:fixed;
     inset:0;
@@ -48,17 +29,17 @@ body{
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    text-align:center;
     color:white;
-    z-index:50;
+    z-index:9999;
+    text-align:center;
 }
 
-#timer{
+#countdownTimer{
     font-size:2rem;
     margin-top:20px;
 }
 
-#valentineText{
+#valentineGreeting{
     font-size:3rem;
     margin-top:20px;
     opacity:0;
@@ -76,11 +57,72 @@ body{
     50%{opacity:0;}
 }
 
-/* SCREENS */
-#lockScreen,
-#questionScreen,
-#finalScreen,
-#lastScreen{
+/* HEARTS */
+.hearts{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+}
+
+.heart{
+    position:absolute;
+    color:rgba(255,255,255,0.6);
+    animation:float 10s linear infinite;
+}
+
+@keyframes float{
+    0%{transform:translateY(100vh) scale(1);}
+    100%{transform:translateY(-10vh) scale(1.5);}
+}
+
+/* LOCK SCREEN */
+#lockScreen{
+    position:fixed;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(120deg,#ff758c,#ff7eb3);
+    z-index:10;
+    color:white;
+}
+
+#lockScreen h1{
+    font-family:'Great Vibes';
+    font-size:3rem;
+    margin-bottom:20px;
+}
+
+#lockScreen img{
+    width:240px;
+    border-radius:20px;
+    margin-bottom:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.35);
+}
+
+#lockScreen input{
+    padding:12px 20px;
+    border-radius:25px;
+    border:none;
+    font-size:18px;
+    text-align:center;
+}
+
+#lockScreen button{
+    margin-top:15px;
+    padding:10px 30px;
+    border-radius:25px;
+    border:none;
+    background:white;
+    color:#ff4f7a;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* QUESTION SCREEN */
+#questionScreen{
     position:fixed;
     inset:0;
     display:none;
@@ -89,14 +131,11 @@ body{
     align-items:center;
     text-align:center;
     color:white;
-    z-index:10;
+    z-index:5;
+    font-family:'Montserrat', sans-serif;
 }
 
-#lockScreen{
-    background:linear-gradient(120deg,#ff758c,#ff7eb3);
-}
-
-h2{
+#questionScreen h2{
     font-size:2.5rem;
     margin-bottom:30px;
 }
@@ -112,13 +151,25 @@ h2{
     border:none;
     font-size:18px;
     cursor:pointer;
+    transition:0.3s;
 }
 
-/* MESSAGE */
+#yesBtn{
+    background:#ff4f7a;
+    color:white;
+    box-shadow:0 0 20px rgba(255,79,122,0.7);
+}
+
+#noBtn{
+    background:white;
+    color:#ff4f7a;
+}
+
+/* MESSAGE SCREEN */
 #messageScreen{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.9);
+    background:rgba(0,0,0,0.88);
     display:none;
     padding:40px;
     overflow-y:auto;
@@ -132,35 +183,39 @@ h2{
     white-space:pre-line;
 }
 
-#doneBtn{
-    margin-top:40px;
-    padding:12px 40px;
-    border-radius:30px;
-    border:none;
-    font-size:18px;
-    background:#ff4f7a;
-    color:white;
-    cursor:pointer;
-    display:none;
+/* CONFETTI */
+.confetti{
+    position:fixed;
+    width:10px;
+    height:10px;
+    animation:fall 4s linear forwards;
+    z-index:1000;
+}
+
+@keyframes fall{
+    from{transform:translateY(-10px) rotate(0deg);}
+    to{transform:translateY(110vh) rotate(360deg);}
 }
 </style>
 </head>
 
 <body>
 
-<div class="hearts" id="hearts"></div>
-
+<!-- COUNTDOWN SCREEN (ADDED) -->
 <div id="countdownScreen">
     <h2>Countdown to Valentine's Day 💗</h2>
-    <div id="timer"></div>
-    <div id="valentineText">HAPPY VALENTINE'S DAY, LOVE!!💗</div>
+    <div id="countdownTimer"></div>
+    <div id="valentineGreeting">HAPPY VALENTINE'S DAY, LOVE!!💗</div>
     <div id="continueText">Click anywhere to continue 💗</div>
 </div>
 
+<div class="hearts" id="hearts"></div>
+
 <div id="lockScreen">
+    <img id="loveImage" src="image.jpg">
     <h1>password muna</h1>
     <input type="password" id="passwordInput" placeholder="Password">
-    <button id="unlockBtn">Unlock</button>
+    <button onclick="checkPassword()">Unlock</button>
 </div>
 
 <div id="questionScreen">
@@ -173,125 +228,123 @@ h2{
 
 <div id="messageScreen">
     <div id="typedText"></div>
-    <button id="doneBtn">Done</button>
-</div>
-
-<div id="finalScreen">
-    <h2>Together Forever?</h2>
-    <div class="buttons">
-        <button id="yesBtn2" class="btn">Yes 💗</button>
-        <button id="noBtn2" class="btn">No</button>
-    </div>
-</div>
-
-<div id="lastScreen">
-    <h2>chupain mo ko forever?</h2>
-    <div class="buttons">
-        <button id="yesBtn3" class="btn">SUPERRRR YES 😋</button>
-        <button id="noBtn3" class="btn">No</button>
-    </div>
 </div>
 
 <audio id="bgMusic" src="music.mp3" loop></audio>
 
 <script>
 
-/* ELEMENTS */
-const countdownScreen=document.getElementById("countdownScreen");
-const timer=document.getElementById("timer");
-const valentineText=document.getElementById("valentineText");
-const continueText=document.getElementById("continueText");
-const lockScreen=document.getElementById("lockScreen");
-const questionScreen=document.getElementById("questionScreen");
-const messageScreen=document.getElementById("messageScreen");
-const finalScreen=document.getElementById("finalScreen");
-const lastScreen=document.getElementById("lastScreen");
-const unlockBtn=document.getElementById("unlockBtn");
-const passwordInput=document.getElementById("passwordInput");
-const bgMusic=document.getElementById("bgMusic");
-const typedText=document.getElementById("typedText");
-const doneBtn=document.getElementById("doneBtn");
+/* COUNTDOWN LOGIC (ADDED ONLY THIS PART) */
+const countdownScreen = document.getElementById("countdownScreen");
+const countdownTimer = document.getElementById("countdownTimer");
+const valentineGreeting = document.getElementById("valentineGreeting");
+const continueText = document.getElementById("continueText");
 
-/* COUNTDOWN */
-const target=new Date(new Date().getFullYear(),1,14,0,0,0);
+const targetDate = new Date(new Date().getFullYear(), 1, 14, 0, 0, 0);
 
-const interval=setInterval(()=>{
-    const now=new Date();
-    const diff=target-now;
+const countdownInterval = setInterval(()=>{
+    const now = new Date();
+    const diff = targetDate - now;
 
-    if(diff<=0){
-        clearInterval(interval);
-        timer.innerHTML="00d 00h 00m 00s";
-        valentineText.style.opacity=1;
-        continueText.style.display="block";
+    if(diff <= 0){
+        clearInterval(countdownInterval);
+        countdownTimer.innerHTML = "00d 00h 00m 00s";
+        valentineGreeting.style.opacity = "1";
+        explodeConfetti();
+        continueText.style.display = "block";
 
-        countdownScreen.addEventListener("click",()=>{
-            countdownScreen.style.display="none";
-            lockScreen.style.display="flex";
-        },{once:true});
+        countdownScreen.addEventListener("click", ()=>{
+            countdownScreen.style.display = "none";
+        }, {once:true});
 
         return;
     }
 
-    const d=Math.floor(diff/(1000*60*60*24));
-    const h=Math.floor((diff/(1000*60*60))%24);
-    const m=Math.floor((diff/1000/60)%60);
-    const s=Math.floor((diff/1000)%60);
+    const d = Math.floor(diff/(1000*60*60*24));
+    const h = Math.floor((diff/(1000*60*60))%24);
+    const m = Math.floor((diff/1000/60)%60);
+    const s = Math.floor((diff/1000)%60);
 
-    timer.innerHTML=`${d}d ${h}h ${m}m ${s}s`;
+    countdownTimer.innerHTML = `${d}d ${h}h ${m}m ${s}s`;
 },1000);
 
+/* EVERYTHING BELOW IS 100% YOUR ORIGINAL CODE */
+
+/* HEARTS */
+const heartsContainer = document.getElementById("hearts");
+setInterval(()=>{
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤";
+    h.style.left=Math.random()*100+"vw";
+    h.style.fontSize=(Math.random()*20+10)+"px";
+    h.style.animationDuration=(Math.random()*5+5)+"s";
+    heartsContainer.appendChild(h);
+    setTimeout(()=>h.remove(),12000);
+},400);
+
 /* PASSWORD */
-unlockBtn.addEventListener("click",()=>{
+function checkPassword(){
     if(passwordInput.value==="132806"){
         lockScreen.style.display="none";
         questionScreen.style.display="flex";
+        bgMusic.volume=0;
         bgMusic.play();
-    }else{
-        alert("ano? di mo alam kelan naging tayo? tantadohh");
-    }
-});
+        let v=0;
+        const fade=setInterval(()=>{
+            v+=0.02;
+            bgMusic.volume=v;
+            if(v>=1) clearInterval(fade);
+        },100);
+    }else alert("ano? di mo alam kelan naging tayo? tantadohh");
+}
 
-/* BUTTONS WORKING */
-document.getElementById("yesBtn").onclick=()=>{
+/* NO + YES GROW */
+let scale=1;
+function moveNo(){
+    noBtn.style.transform=`translate(${Math.random()*400-200}px,${Math.random()*400-200}px)`;
+    scale+=0.12;
+    yesBtn.style.transform=`scale(${scale})`;
+}
+noBtn.addEventListener("mouseover",moveNo);
+noBtn.addEventListener("click",moveNo);
+noBtn.addEventListener("touchstart",moveNo);
+
+/* YES */
+yesBtn.onclick=()=>{
+    explodeConfetti();
     questionScreen.style.display="none";
     messageScreen.style.display="block";
+    typedText.innerHTML="";
+    i=0;
     typeMessage();
 };
 
-document.getElementById("noBtn").onclick=()=>{
-    alert("Sure ka? 😏");
-};
+/* CONFETTI */
+function explodeConfetti(){
+    for(let i=0;i<200;i++){
+        const c=document.createElement("div");
+        c.className="confetti";
+        c.style.left=Math.random()*100+"vw";
+        c.style.background=`hsl(${Math.random()*360},100%,60%)`;
+        c.style.animationDuration=(Math.random()*3+2)+"s";
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(),5000);
+    }
+}
 
-doneBtn.onclick=()=>{
-    messageScreen.style.display="none";
-    finalScreen.style.display="flex";
-};
-
-document.getElementById("yesBtn2").onclick=()=>{
-    finalScreen.style.display="none";
-    lastScreen.style.display="flex";
-};
-
-document.getElementById("noBtn2").onclick=()=>{
-    alert("Ay bawal yan 😌");
-};
-
-document.getElementById("yesBtn3").onclick=()=>{
-    alert("ETO NA CHUPAIN MOOOO");
-};
-
-document.getElementById("noBtn3").onclick=()=>{
-    alert("nay iba siguro gusto mong chupain no? pakyu ka na lang kung ganun");
-};
-
-/* MESSAGE (UNCHANGED) */
-const message=`
-
+/* PERSONAL MESSAGE (UNCHANGED) */
+const message = `
 Happy Valentine's Day, Love!!! 💗
 
+
 rekta na agad sa message ko na gustong gusto mo palagi🫩
-di tayo nag uusap ngayon pero sana alam mo na wala akong ginagawang hindi mo magugustuhan...
+di tayo nag uusap ngayon pero sana alam mo na wala akong ginagawang hindi mo magugustuhan. isa rin to sa dahilan kung bat ayoko mag sulat, inaaway mo ko e edi wala akong magawa duh. gusto ko lang sabihin sayo na sorry, sorry sa mga mali kong ginagawa sayo. sa pag mumura, sa pag di intindi sayo. oo pareho tayong may mali palagi pero nag sosorry ako para sa mga mali kong nagawa. hindi perpekto ang relasyon natin, maraming tampuhan, awayan, tiisan, at kung ano ano pa. pero sana, sa kabila ng mga yan e hindi tayo manawa sa isa't isa. mahal kita, at ayaw kitang mawala ng dahil lang sa di natin pagkakaunawaan. sana di ka rin mag sawa, sana lumaban ka rin hanggang dulo kasi parehas naman nating gusto na maging hanggang dulo, di ba?
+
+syempre, di mawawala ang pasasalamat ko sayo. salamat sa araw araw na pag papasaya sakin. salamat sa pag aalaga, pag aasikaso, at pag paparamdam sakin na mahal mo talaga ako. di ko man lagi nasasabi sayo pero sobrang thankful ako na ikaw ang naging girlfriend ko. ibang iba ka sa ex ko. (alam kong tatanong mo kung pano ka naging iba sa ex ko pero bahala ka sa buhay mo, hindi kita sasagutin, basahin mo na lang.) siguro kung di ikaw naging girlfriend ko e palpak na naman e. kaya salamat ng marami sa pag bibigay sakin ng chance na maging tayo, sa paniniwala na kaya kitang mahalin ng todo. wag kang mag alala, di man tayo lagi magka sundo e hindi ako mag sasawang sabihin sayo na mahal kita. oo di ko man nasasabi araw araw pero eto, sinasabi ko na sayo, kahit sa mga oras na di tayo nag uusap tulad nito, kahit mag kaaway tayo, mahal na mahal pa rin kita. 
+
+sana naappreciate mo to kahit simple lang at di hand-written hehe I love youuuu so muchhhh!!! Happy Valentine's ulit, Love!😘💗
+
 
 Forever yours,
 Johannes
@@ -303,14 +356,24 @@ function typeMessage(){
         typedText.innerHTML+=message.charAt(i);
         i++;
         setTimeout(typeMessage,35);
-    }else{
-        doneBtn.style.display="inline-block";
     }
 }
 
+/* IMAGE SWAP */
+const imgs=["image.jpg","image1.jpg"];
+let idx=0;
+setInterval(()=>{
+    if(loveImage){
+        idx=(idx+1)%imgs.length;
+        loveImage.src=imgs[idx];
+    }
+},4000);
+
 </script>
+
 </body>
 </html>
+
 
 
 
