@@ -39,21 +39,41 @@ body{
     100%{transform:translateY(-10vh) scale(1.5);}
 }
 
-/* LOCK SCREEN */
-#lockScreen{
+/* SCREENS */
+#lockScreen,
+#questionScreen,
+#finalScreen,
+#lastScreen{
     position:fixed;
     inset:0;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
+    text-align:center;
+    color:white;
+    transition:opacity 0.6s ease;
+}
+
+.hidden{
+    opacity:0;
+    pointer-events:none;
+}
+
+#lockScreen{
     background:linear-gradient(120deg,#ff758c,#ff7eb3);
     z-index:10;
-    color:white;
+}
+
+#questionScreen,
+#finalScreen,
+#lastScreen{
+    display:none;
+    z-index:5;
 }
 
 #lockScreen h1{
-    font-family:'Montserrat', sans-serif; /* FIXED NOT CURSIVE */
+    font-family:'Montserrat', sans-serif;
     font-size:3rem;
     margin-bottom:20px;
 }
@@ -84,22 +104,7 @@ body{
     cursor:pointer;
 }
 
-/* QUESTION SCREEN */
-#questionScreen,
-#finalScreen{
-    position:fixed;
-    inset:0;
-    display:none;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    color:white;
-    z-index:5;
-}
-
-#questionScreen h2,
-#finalScreen h2{
+h2{
     font-size:2.5rem;
     margin-bottom:30px;
 }
@@ -118,18 +123,18 @@ body{
     transition:0.3s;
 }
 
-#yesBtn, #yesBtn2{
+#yesBtn,#yesBtn2,#yesBtn3{
     background:#ff4f7a;
     color:white;
     box-shadow:0 0 20px rgba(255,79,122,0.7);
 }
 
-#noBtn, #noBtn2{
+#noBtn,#noBtn2,#noBtn3{
     background:white;
     color:#ff4f7a;
 }
 
-/* MESSAGE SCREEN */
+/* MESSAGE */
 #messageScreen{
     position:fixed;
     inset:0;
@@ -138,6 +143,7 @@ body{
     padding:40px;
     overflow-y:auto;
     z-index:20;
+    transition:opacity 0.6s ease;
 }
 
 #typedText{
@@ -207,11 +213,20 @@ body{
     </div>
 </div>
 
+<div id="lastScreen">
+    <h2>chupain mo ko forever?</h2>
+    <div class="buttons">
+        <button id="yesBtn3" class="btn">Yes 💗</button>
+        <button id="noBtn3" class="btn">No</button>
+    </div>
+</div>
+
 <audio id="bgMusic" src="music.mp3" loop></audio>
 
 <script>
+
 /* HEARTS */
-const heartsContainer = document.getElementById("hearts");
+const heartsContainer=document.getElementById("hearts");
 setInterval(()=>{
     const h=document.createElement("div");
     h.className="heart";
@@ -239,16 +254,14 @@ function checkPassword(){
     }else alert("ano? di mo alam kelan naging tayo? tantadohh");
 }
 
-/* FIRST YES/NO */
+/* FIRST */
 let scale=1;
 function moveNo(){
     noBtn.style.transform=`translate(${Math.random()*400-200}px,${Math.random()*400-200}px)`;
     scale+=0.12;
     yesBtn.style.transform=`scale(${scale})`;
 }
-noBtn.addEventListener("mouseover",moveNo);
-noBtn.addEventListener("click",moveNo);
-noBtn.addEventListener("touchstart",moveNo);
+noBtn.onmouseover=noBtn.onclick=noBtn.ontouchstart=moveNo;
 
 yesBtn.onclick=()=>{
     explodeConfetti();
@@ -259,24 +272,37 @@ yesBtn.onclick=()=>{
     typeMessage();
 };
 
-/* DONE BUTTON */
+/* DONE */
 doneBtn.onclick=()=>{
     messageScreen.style.display="none";
     finalScreen.style.display="flex";
 };
 
-/* SECOND YES/NO */
+/* SECOND */
 let scale2=1;
 function moveNo2(){
     noBtn2.style.transform=`translate(${Math.random()*400-200}px,${Math.random()*400-200}px)`;
     scale2+=0.12;
     yesBtn2.style.transform=`scale(${scale2})`;
 }
-noBtn2.addEventListener("mouseover",moveNo2);
-noBtn2.addEventListener("click",moveNo2);
-noBtn2.addEventListener("touchstart",moveNo2);
+noBtn2.onmouseover=noBtn2.onclick=noBtn2.ontouchstart=moveNo2;
 
 yesBtn2.onclick=()=>{
+    explodeConfetti();
+    finalScreen.style.display="none";
+    lastScreen.style.display="flex";
+};
+
+/* THIRD */
+let scale3=1;
+function moveNo3(){
+    noBtn3.style.transform=`translate(${Math.random()*400-200}px,${Math.random()*400-200}px)`;
+    scale3+=0.12;
+    yesBtn3.style.transform=`scale(${scale3})`;
+}
+noBtn3.onmouseover=noBtn3.onclick=noBtn3.ontouchstart=moveNo3;
+
+yesBtn3.onclick=()=>{
     explodeConfetti();
 };
 
@@ -293,8 +319,9 @@ function explodeConfetti(){
     }
 }
 
-/* PERSONAL MESSAGE (UNTOUCHED) */
+/* PERSONAL MESSAGE UNTOUCHED */
 const message = `
+
 Happy Valentine's Day, Love!!! 💗
 
 
@@ -330,10 +357,11 @@ setInterval(()=>{
         loveImage.src=imgs[idx];
     }
 },4000);
-</script>
 
+</script>
 </body>
 </html>
+
 
 
 
