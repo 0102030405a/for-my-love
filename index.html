@@ -11,7 +11,7 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Montserrat', sans-serif; /* default font */
+    font-family:'Montserrat', sans-serif;
 }
 
 body{
@@ -53,7 +53,7 @@ body{
 }
 
 #lockScreen h1{
-    font-family:'Great Vibes'; /* password title still cursive */
+    font-family:'Montserrat', sans-serif; /* FIXED NOT CURSIVE */
     font-size:3rem;
     margin-bottom:20px;
 }
@@ -85,7 +85,8 @@ body{
 }
 
 /* QUESTION SCREEN */
-#questionScreen{
+#questionScreen,
+#finalScreen{
     position:fixed;
     inset:0;
     display:none;
@@ -95,13 +96,12 @@ body{
     text-align:center;
     color:white;
     z-index:5;
-    font-family:'Montserrat', sans-serif; /* make question screen legible */
 }
 
-#questionScreen h2{
+#questionScreen h2,
+#finalScreen h2{
     font-size:2.5rem;
     margin-bottom:30px;
-    font-family:'Montserrat', sans-serif; /* override cursive */
 }
 
 .buttons{
@@ -118,13 +118,13 @@ body{
     transition:0.3s;
 }
 
-#yesBtn{
+#yesBtn, #yesBtn2{
     background:#ff4f7a;
     color:white;
     box-shadow:0 0 20px rgba(255,79,122,0.7);
 }
 
-#noBtn{
+#noBtn, #noBtn2{
     background:white;
     color:#ff4f7a;
 }
@@ -145,6 +145,18 @@ body{
     font-size:22px;
     line-height:1.8;
     white-space:pre-line;
+}
+
+#doneBtn{
+    margin-top:40px;
+    padding:12px 40px;
+    border-radius:30px;
+    border:none;
+    font-size:18px;
+    background:#ff4f7a;
+    color:white;
+    cursor:pointer;
+    display:none;
 }
 
 /* CONFETTI */
@@ -184,6 +196,15 @@ body{
 
 <div id="messageScreen">
     <div id="typedText"></div>
+    <button id="doneBtn">Done</button>
+</div>
+
+<div id="finalScreen">
+    <h2>Together Forever?</h2>
+    <div class="buttons">
+        <button id="yesBtn2" class="btn">Yes 💗</button>
+        <button id="noBtn2" class="btn">No</button>
+    </div>
 </div>
 
 <audio id="bgMusic" src="music.mp3" loop></audio>
@@ -218,7 +239,7 @@ function checkPassword(){
     }else alert("ano? di mo alam kelan naging tayo? tantadohh");
 }
 
-/* NO + YES GROW */
+/* FIRST YES/NO */
 let scale=1;
 function moveNo(){
     noBtn.style.transform=`translate(${Math.random()*400-200}px,${Math.random()*400-200}px)`;
@@ -229,7 +250,6 @@ noBtn.addEventListener("mouseover",moveNo);
 noBtn.addEventListener("click",moveNo);
 noBtn.addEventListener("touchstart",moveNo);
 
-/* YES */
 yesBtn.onclick=()=>{
     explodeConfetti();
     questionScreen.style.display="none";
@@ -237,6 +257,27 @@ yesBtn.onclick=()=>{
     typedText.innerHTML="";
     i=0;
     typeMessage();
+};
+
+/* DONE BUTTON */
+doneBtn.onclick=()=>{
+    messageScreen.style.display="none";
+    finalScreen.style.display="flex";
+};
+
+/* SECOND YES/NO */
+let scale2=1;
+function moveNo2(){
+    noBtn2.style.transform=`translate(${Math.random()*400-200}px,${Math.random()*400-200}px)`;
+    scale2+=0.12;
+    yesBtn2.style.transform=`scale(${scale2})`;
+}
+noBtn2.addEventListener("mouseover",moveNo2);
+noBtn2.addEventListener("click",moveNo2);
+noBtn2.addEventListener("touchstart",moveNo2);
+
+yesBtn2.onclick=()=>{
+    explodeConfetti();
 };
 
 /* CONFETTI */
@@ -252,7 +293,7 @@ function explodeConfetti(){
     }
 }
 
-/* PERSONAL MESSAGE */
+/* PERSONAL MESSAGE (UNTOUCHED) */
 const message = `
 Happy Valentine's Day, Love!!! 💗
 
@@ -275,6 +316,8 @@ function typeMessage(){
         typedText.innerHTML+=message.charAt(i);
         i++;
         setTimeout(typeMessage,35);
+    } else {
+        doneBtn.style.display="inline-block";
     }
 }
 
@@ -291,6 +334,7 @@ setInterval(()=>{
 
 </body>
 </html>
+
 
 
 
