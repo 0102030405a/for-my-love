@@ -289,7 +289,24 @@ const countdownInterval = setInterval(()=>{
         continueText.style.display="block";
       
         bgMusic.currentTime = 0;
-        bgMusic.play().catch(()=>{});
+        bgMusic.volume = 0;
+
+        bgMusic.play().then(() => {
+        let v = 0;
+        let fade = setInterval(() => {
+        if (v < 1) {
+            v += 0.05;
+            bgMusic.volume = v;
+        } else {
+            clearInterval(fade);
+        }
+    }, 200);
+}).catch(() => {
+    document.addEventListener("click", () => {
+        bgMusic.play();
+    }, { once: true });
+});
+
 
         countdownScreen.addEventListener("click", ()=>{
             countdownScreen.style.display="none";
