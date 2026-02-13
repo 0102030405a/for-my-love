@@ -287,6 +287,9 @@ const countdownInterval = setInterval(()=>{
         valentineGreeting.style.opacity = "1";
         explodeConfetti();
         continueText.style.display="block";
+      
+        bgMusic.currentTime = 0;
+        bgMusic.play().catch(()=>{});
 
         countdownScreen.addEventListener("click", ()=>{
             countdownScreen.style.display="none";
